@@ -5,6 +5,10 @@ const client = new Discord.Client()
 
 const config = JSON.parse(readFileSync('./config.json', 'utf8'))
 const { token } = config
+const state = {
+	queue: [],
+	timer: null,
+}
 
 console.log('Starting...')
 client.once('ready', () => {
@@ -28,7 +32,7 @@ client.on('message', (message) => {
 	if (command.startsWith('!')) {
 		const name = command.slice(1)
 		if (name in commands) {
-			commands[name](args, message)
+			commands[name](args, message, state)
 		}
 	}
 })
