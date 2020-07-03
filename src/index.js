@@ -13,6 +13,18 @@ client.once('ready', () => {
 
 client.on('message', (message) => {
 	const [command, ...args] = message.content.split(/\s+/)
+	/* TODO
+	Add custom prefix that isn't global (!qb new)
+	Add help command as fallback for unrecognized commands
+	Add reaction parsing to gather user IDs, in order of reacting
+
+	Help:
+	!qb new [title] - Starts a new queue, with a dedicated message that can be reacted to.
+		If there is a running queue, this replaces it with a new one. Only one queue/timer can be running currently.
+	!qb start [userCount] [timeToRespond] - Starts a timer and messages everyone at the top of the queue
+	!qb stop - Cancels the timer but leaves the queue open
+	!qb delete - Removes the queue
+	*/
 	if (command.startsWith('!')) {
 		const name = command.slice(1)
 		if (name in commands) {
