@@ -1,8 +1,8 @@
-const { version } = require('../package.json')
+const { name, version } = require('../package.json')
 const { prefix } = require('./config')
 
 function sendHelp(message) {
-	const help = `queue-bot ${version}
+	const help = `${name} ${version}
 Usage: ${prefix} [command] [args]
 Commands:
   ${prefix} new [title] - Starts a new queue, with a dedicated message that can be reacted to.
