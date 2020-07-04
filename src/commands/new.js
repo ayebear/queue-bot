@@ -11,7 +11,7 @@ module.exports = async (args, adminMessage, state) => {
 
 		// Setup queue message for people to react to
 		const botMessage = await adminMessage.channel.send(
-			`New queue created with title: "${title}".\nPlease react with ${emoji} to be added to the queue.`
+			`${title}\nPlease react with ${emoji} to be added to the queue.`
 		)
 		await botMessage.react(emoji)
 
