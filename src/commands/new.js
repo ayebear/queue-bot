@@ -1,28 +1,30 @@
 const { remove } = require('lodash')
 
-const allowed = new Set(['👎', '👍', '➕'])
+// const allowed = new Set(['👎', '👍', '➕'])
+const emoji = '👍'
 
-const filter = (reaction, user) => true || allowed.has(reaction.emoji.name)
+const filter = (reaction, user) => reaction.emoji.name === emoji
 
 module.exports = async (args, adminMessage, state) => {
 	try {
 		const title = args.join(' ') || 'Untitled Queue'
 		state.queue = []
 		state.timer = null
-		const botMessage = await adminMessage.channel.send(title)
-		// const collected = await message.awaitReactions(filter, { time: 15000 })
-		// console.log(collected)
+		const botMessage = await adminMessage.channel.send(
+			`New queue created with title: "${title}". Please react with ${emoji} to be added to the queue.`
+		)
 		const collector = botMessage.createReactionCollector(filter, {
 			dispose: true,
 		})
-		console.log(collector)
 		collector.on('collect', (reaction, user) => {
 			state.queue.push(user.id)
-			console.log('Added to queue', reaction.emoji.name, user)
+			user.send(
+				`You are at position ${state.queue.length} of the queue titled: "${title}"`
+			)
 		})
 		collector.on('remove', (reaction, user) => {
 			remove(state.queue, user.id)
-			console.log('Removed from queue', reaction, user.id)
+			user.send(`You were removed from the queue titled: "${title}`)
 		})
 		collector.on('end', (collected) =>
 			console.log(`Collected ${collected.size} items`)
