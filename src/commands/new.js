@@ -25,13 +25,13 @@ module.exports = async (args, adminMessage, state) => {
 			dispose: true,
 		})
 		state.collector.on('collect', (reaction, user) => {
-			state.queue.push(user.id)
+			state.queue.push(user)
 			user.send(
 				`You are at position ${state.queue.length} of the queue titled: "${title}"`
 			)
 		})
 		state.collector.on('remove', (reaction, user) => {
-			remove(state.queue, user.id)
+			remove(state.queue, (u) => u.id === user.id)
 			user.send(`You were removed from the queue titled: "${title}"`)
 		})
 		state.collector.on('end', (collected) =>
