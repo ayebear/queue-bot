@@ -91,6 +91,13 @@ setimmediate@^1.0.5:
   resolved "https://registry.yarnpkg.com/setimmediate/-/setimmediate-1.0.5.tgz#290cbb232e306942d7d7ea9b83732ab7856f8285"
   integrity sha1-KQy7Iy4waULX1+qbg3Mqt4VvgoU=
 
+simple-duration@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/simple-duration/-/simple-duration-1.0.1.tgz#11df05127bfdf110e349301d59e8062130f086fe"
+  integrity sha512-/R3wxM49A2zvAwm4wgTI5dpJE/+MNca+XGlX5vxQkDZ+3Kl3EOxUZJ9anXz4R0tcTnhtU2ruopFZ1npsIGI+nw==
+  dependencies:
+    lodash "^4.17.15"
+
 tweetnacl@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.3.tgz#ac0af71680458d8a6378d0d0d050ab1407d35596"

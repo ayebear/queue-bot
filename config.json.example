@@ -1,4 +1,5 @@
 {
 	"token": "<token_goes_here>",
-	"prefix": "!qb"
+	"prefix": "!qb",
+	"role": "<role_name_goes_here>"
 }
