@@ -1,8 +1,10 @@
 const { readFileSync } = require('fs')
 const commands = require('./commands')
 const Discord = require('discord.js')
+const { version } = require('../package.json')
 const client = new Discord.Client()
 
+const prefix = '!qb'
 const config = JSON.parse(readFileSync('./config.json', 'utf8'))
 const { token } = config
 const state = {
@@ -16,26 +18,31 @@ client.once('ready', () => {
 })
 
 client.on('message', (adminMessage) => {
-	const [command, ...args] = adminMessage.content.split(/\s+/)
+	const [qb, command, ...args] = adminMessage.content.split(/\s+/)
 	/* TODO
-	Add custom prefix that isn't global (!qb new)
-	Add help command as fallback for unrecognized commands
-	Add reaction parsing to gather user IDs, in order of reacting
-
-	Help:
-	!qb new [title] - Starts a new queue, with a dedicated message that can be reacted to.
-		If there is a running queue, this replaces it with a new one. Only one queue/timer can be running currently.
-	!qb start [userCount] [timeToRespond] - Starts a timer and messages everyone at the top of the queue
-	!qb view - Prints out entire current queue
-	!qb stop - Cancels the timer but leaves the queue open
-	!qb delete - Removes the queue
+	Implement remaining commands and timer functionality
 	*/
-	if (command.startsWith('!')) {
-		const name = command.slice(1)
-		if (name in commands) {
-			commands[name](args, adminMessage, state)
+	if (qb === prefix) {
+		if (command in commands) {
+			commands[command](args, adminMessage, state)
+		} else {
+			sendHelp(adminMessage)
 		}
 	}
 })
 
 client.login(token)
+
+const help = `queue-bot ${version}
+Usage: ${prefix} [command] [args]
+Commands:
+  ${prefix} new [title] - Starts a new queue, with a dedicated message that can be reacted to.
+    If there is a running queue, this replaces it with a new one. Only one queue/timer can be running currently.
+  ${prefix} start [userCount] [timeToRespond] - Starts a timer and messages everyone at the top of the queue
+  ${prefix} view - Prints out entire current queue
+  ${prefix} stop - Cancels the timer but leaves the queue open
+  ${prefix} delete - Removes the queue`
+
+function sendHelp(message) {
+	message.channel.send(help)
+}
