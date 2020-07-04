@@ -1,3 +1,4 @@
 {
-	"token": "<token_goes_here>"
+	"token": "<token_goes_here>",
+	"prefix": "!qb"
 }

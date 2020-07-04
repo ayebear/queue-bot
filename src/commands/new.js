@@ -6,6 +6,9 @@ const emoji = '👍'
 module.exports = async (args, adminMessage, state) => {
 	try {
 		const title = args.join(' ') || 'Untitled Queue'
+		if (state.collector) {
+			state.collector.stop()
+		}
 		state.queue = []
 		state.timer = null
 
@@ -18,23 +21,25 @@ module.exports = async (args, adminMessage, state) => {
 		// Handle reaction events, update queue
 		const filter = (reaction, user) =>
 			reaction.emoji.name === emoji && user.id !== botMessage.author.id
-		const collector = botMessage.createReactionCollector(filter, {
+		state.collector = botMessage.createReactionCollector(filter, {
 			dispose: true,
 		})
-		collector.on('collect', (reaction, user) => {
+		state.collector.on('collect', (reaction, user) => {
 			state.queue.push(user.id)
 			user.send(
 				`You are at position ${state.queue.length} of the queue titled: "${title}"`
 			)
 		})
-		collector.on('remove', (reaction, user) => {
+		state.collector.on('remove', (reaction, user) => {
 			remove(state.queue, user.id)
 			user.send(`You were removed from the queue titled: "${title}"`)
 		})
-		collector.on('end', (collected) =>
+		state.collector.on('end', (collected) =>
 			console.log(`Collected ${collected.size} items`)
 		)
+		return true
 	} catch (e) {
 		console.error(e)
 	}
+	return false
 }
