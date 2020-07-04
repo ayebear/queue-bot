@@ -10,9 +10,14 @@ module.exports = async (args, adminMessage, state) => {
 		const title = args.join(' ') || 'Untitled Queue'
 		state.queue = []
 		state.timer = null
+
+		// Setup queue message for people to react to
 		const botMessage = await adminMessage.channel.send(
 			`New queue created with title: "${title}". Please react with ${emoji} to be added to the queue.`
 		)
+		await botMessage.react(emoji)
+
+		// Handle reaction events, update queue
 		const collector = botMessage.createReactionCollector(filter, {
 			dispose: true,
 		})
