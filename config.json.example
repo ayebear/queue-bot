@@ -1,5 +1,7 @@
 {
 	"token": "<token_goes_here>",
 	"prefix": "!qb",
-	"role": "<role_name_goes_here>"
+	"role": "<role_name_goes_here>",
+	"queueEmoji": "👍",
+	"timerEmoji": "🎉"
 }

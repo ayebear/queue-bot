@@ -1,7 +1,5 @@
 const { remove } = require('lodash')
-
-// const allowed = new Set(['👎', '👍', '➕'])
-const emoji = '👍'
+const { queueEmoji } = require('../config')
 
 module.exports = async (args, adminMessage, state) => {
 	try {
@@ -14,13 +12,14 @@ module.exports = async (args, adminMessage, state) => {
 
 		// Setup queue message for people to react to
 		const botMessage = await adminMessage.channel.send(
-			`${title}\nPlease react with ${emoji} to be added to the queue.`
+			`${title}\nPlease react with ${queueEmoji} to be added to the queue.`
 		)
-		await botMessage.react(emoji)
+		await botMessage.react(queueEmoji)
 
 		// Handle reaction events, update queue
 		const filter = (reaction, user) =>
-			reaction.emoji.name === emoji && user.id !== botMessage.author.id
+			reaction.emoji.name === queueEmoji &&
+			user.id !== botMessage.author.id
 		state.collector = botMessage.createReactionCollector(filter, {
 			dispose: true,
 		})
