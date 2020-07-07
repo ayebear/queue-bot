@@ -1,5 +1,6 @@
 const { role, timerEmoji } = require('../config')
 const { parseTime, formatUsers } = require('../utils')
+const { remove } = require('lodash')
 
 module.exports = async (args, adminMessage, state) => {
 	try {
@@ -50,6 +51,9 @@ module.exports = async (args, adminMessage, state) => {
 
 				// Add role to user
 				await member.roles.add(roleRef.id)
+
+				// Remove user from queue
+				remove(state.queue, (u) => u.id === user.id)
 			}
 		})
 		state.collector.on('end', (collected) =>
