@@ -2,10 +2,15 @@ const sd = require('simple-duration')
 
 // Returns a formatted string of users in the queue
 // TODO: Use rich embeds
-function formatUsers(queue, mention = false) {
-	return queue
-		.map((user, i) => `${i + 1}. ${mention ? '@' : ''}${user.username}`)
-		.join('\n')
+async function formatUsers(queue, message, mention = false) {
+	const userStrings = await Promise.all(
+		queue.map(async (user, i) => {
+			const member = await message.guild.members.fetch(user.id)
+			const displayName = member.displayName || user.username
+			return `${i + 1}. ${mention ? '@' : ''}${displayName}`
+		})
+	)
+	return userStrings.join('\n')
 }
 
 // Returns time in seconds, as well as formatted time in mm:ss

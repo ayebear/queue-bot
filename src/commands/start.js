@@ -34,7 +34,7 @@ module.exports = async (args, adminMessage, state) => {
 		// Show top users with pre-reaction
 		const startString =
 			`The following ${topUsers.length} user(s) have ${formatted} to react with ${timerEmoji}, to be assigned the "${role}" role:\n` +
-			formatUsers(topUsers, true)
+			(await formatUsers(topUsers, adminMessage, true))
 		const timerMessage = await adminMessage.channel.send(startString)
 		await timerMessage.react(timerEmoji)
 
