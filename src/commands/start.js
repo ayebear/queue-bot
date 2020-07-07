@@ -23,6 +23,7 @@ module.exports = async (args, adminMessage, state) => {
 
 		// Get top users
 		const topUsers = state.queue.slice(0, count)
+		const topUserIds = new Set(topUsers.map((user) => user.id))
 
 		// Get role to assign to users
 		const roleRef = adminMessage.guild.roles.cache.find(
@@ -41,12 +42,18 @@ module.exports = async (args, adminMessage, state) => {
 			reaction.emoji.name === timerEmoji &&
 			user.id !== timerMessage.author.id
 		state.collector = timerMessage.createReactionCollector(filter, { time })
-		state.collector.on('collect', (reaction, user) => {
-			// Add role to user
-			user.roles.add(roleRef)
+		state.collector.on('collect', async (reaction, user) => {
+			// Make sure this is a top user
+			if (topUserIds.has(user.id)) {
+				// Find member from current guild
+				const member = await timerMessage.guild.members.fetch(user.id)
+
+				// Add role to user
+				await member.roles.add(roleRef.id)
+			}
 		})
 		state.collector.on('end', (collected) =>
-			console.log(`Collected ${collected.size} items`)
+			console.log(`Collected ${collected.size} items for start`)
 		)
 		return true
 	} catch (e) {
