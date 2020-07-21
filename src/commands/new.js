@@ -1,5 +1,6 @@
 const { remove } = require('lodash')
-const { queueEmoji } = require('../config')
+
+const queueEmoji = process.env.QUEUE_EMOJI
 
 module.exports = async (args, adminMessage, state) => {
 	try {

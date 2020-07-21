@@ -1,6 +1,8 @@
-const { role, timerEmoji } = require('../config')
 const { parseTime, formatUsers } = require('../utils')
 const { remove } = require('lodash')
+
+const role = process.env.ROLE
+const timerEmoji = process.env.TIMER_EMOJI
 
 module.exports = async (args, adminMessage, state) => {
 	try {

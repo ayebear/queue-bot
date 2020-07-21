@@ -1,8 +1,10 @@
 const commands = require('./commands')
 const { sendHelp } = require('./help')
 const Discord = require('discord.js')
-const { token, prefix } = require('./config')
 const client = new Discord.Client()
+
+const token = process.env.TOKEN
+const prefix = process.env.PREFIX
 
 const state = {
 	queue: [],
