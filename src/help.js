@@ -1,5 +1,6 @@
 const { name, version } = require('../package.json')
-const { prefix } = require('./config')
+
+const prefix = process.env.PREFIX
 
 function sendHelp(message) {
 	const help = `${name} ${version}
